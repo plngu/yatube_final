@@ -121,4 +121,3 @@ class ImagePostFormTests(TestCase):
         self.assertEqual(post.id, ImagePostFormTests.post.id)
         self.assertEqual(post.image,
                          f'posts/{ImagePostFormTests.image_name}')
-

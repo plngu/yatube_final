@@ -124,7 +124,8 @@ class PagesTests(TestCase):
         self.assertEqual(response.content, response_after_delete.content)
         cache.clear()
         response_after_clear_cache = self.client.get(reverse('posts:index'))
-        self.assertNotEqual(response.content, response_after_clear_cache.content)
+        self.assertNotEqual(response.content,
+                            response_after_clear_cache.content)
 
 
 class PaginatorViewsTest(TestCase):
