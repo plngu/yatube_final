@@ -23,12 +23,12 @@
     <a href="{% url 'posts:group_list' post.group.slug %}">
       все записи группы
     </a>
+  {% endif %}
     <p>
       <a href="{% url 'posts:post_detail' post.pk %}">
         подробная информация
       </a>
     <p>
-  {% endif %}
   {% if not forloop.last %}<hr>{% endif %}
   {% endfor %}
   {% include 'posts/includes/paginator.html' %}

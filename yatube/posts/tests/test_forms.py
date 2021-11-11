@@ -160,14 +160,26 @@ class PostCreateFormTests(TestCase):
                                        kwargs=kwargs))
 
     # Test follows
-    def test_auth_user_can_follow_unfollow(self):
-        follow = PostCreateFormTests.follow
+    def test_auth_user_can_follow(self):
         count = Follow.objects.count()
-        self.assertEqual(follow.user, PostCreateFormTests.user1)
-        self.assertEqual(follow.author, PostCreateFormTests.user)
+        kwargs = {'username': PostCreateFormTests.user.username}
+        response = self.authorized_client.get(reverse('posts:profile_follow',
+                                                      kwargs=kwargs))
+        self.assertRedirects(response, reverse('posts:profile',
+                                               kwargs=kwargs))
         self.assertEqual(count, 1)
-        follow.delete()
-        self.assertTrue(PostCreateFormTests.follow, False)
+
+    def test_auth_user_can_unfollow(self):
+        count = Follow.objects.count()
+        kwargs = {'username': PostCreateFormTests.user.username}
+        response = self.authorized_client.get(
+            reverse('posts:profile_unfollow',
+                    kwargs=kwargs)
+        )
+        self.assertRedirects(response, reverse('posts:profile',
+                                               kwargs=kwargs))
+        PostCreateFormTests.follow.delete()
+        self.assertNotEqual(count, Follow.objects.count())
 
     def test_new_post_is_on_followers_wall(self):
         response = self.authorized_client1.get(reverse('posts:follow_index'))

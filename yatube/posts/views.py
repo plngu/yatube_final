@@ -16,6 +16,7 @@ def index(request):
     page_obj = paginator.get_page(page_number)
     context = {
         'page_obj': page_obj,
+        'index_button': True,
     }
     return render(request, 'posts/index.html', context)
 
@@ -40,10 +41,13 @@ def profile(request, username):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     total_user_posts = post_list.count()
-    if request.user.is_authenticated:
-        following = Follow.objects.filter(author=author, user=request.user)
-    else:
-        following = None
+    # Если пользователь гость, то запрос с user=request.user крашнется
+    following = False
+    if not request.user.is_anonymous:
+        following = Follow.objects.filter(
+            author=author,
+            user=request.user
+        ).exists()
     context = {
         'author': author,
         'total_user_posts': total_user_posts,
@@ -120,6 +124,7 @@ def follow_index(request):
     page_obj = paginator.get_page(page_number)
     context = {
         'page_obj': page_obj,
+        'follow_button': True,
     }
     return render(request, 'posts/follow.html', context)
 
@@ -127,10 +132,8 @@ def follow_index(request):
 @login_required
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
-    follow = Follow.objects.filter(user=request.user, author=author)
     if request.user != author:
-        if not follow:
-            Follow.objects.create(user=request.user, author=author)
+        Follow.objects.get_or_create(user=request.user, author=author)
     return redirect('posts:profile', username=request.user)
 
 
