@@ -1,3 +1,22 @@
-# hw05_final
+# Проект Yatube
 
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml)
+Социальная сеть
+
+### Возможности
+
+- Регистрация, страница профиля;
+- возможность публикации постов;
+- добавления поста к опреденной группе;
+- возможность подписки на авторов.
+
+### Технологии
+
+- Python3.9;
+- Django 2.2.
+
+### Приложения
+
+- about (информация о проекте);
+- core (кастомные страницы ошибок);
+- posts (основная логика проекта, models, urls, views);
+- users (логика авторизации, регистрации прользователей).
